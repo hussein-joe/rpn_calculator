@@ -12,4 +12,12 @@ public class CalculatorSession {
     public void addDigit(Double digit) {
 
     }
+
+    public int countDigits() {
+        return 0;
+    }
+
+    public String popDigit() {
+        return null;
+    }
 }
