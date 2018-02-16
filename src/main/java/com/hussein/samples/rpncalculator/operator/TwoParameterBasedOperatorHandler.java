@@ -23,13 +23,13 @@ public class TwoParameterBasedOperatorHandler implements OperatorHandler {
         this.digitProcessor = digitProcessor;
     }
 
-
     @Override
     public void handle(String operator, CalculatorSession session) {
         if ( !canHandle(operator) ) {
             return;
         }
         validateParameters(operator, session);
+
         double parameter1 = fetchParameter(session);
         double parameter2 = fetchParameter(session);
 

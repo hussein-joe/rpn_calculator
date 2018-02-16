@@ -1,5 +1,6 @@
 package com.hussein.samples.rpncalculator.engine;
 
+import com.hussein.samples.rpncalculator.exceptions.NotSupportedOperatorException;
 import com.hussein.samples.rpncalculator.operator.OperatorHandler;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,12 +40,12 @@ public class CalculatorTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        calculator = new Calculator(session, digitProcessor, operatorHandlerFactory);
+        calculator = new Calculator(digitProcessor, operatorHandlerFactory);
     }
 
     @Test
     public void shouldPrintStackWhenEmptyStringPassed() {
-        String actualResult = calculator.evaluate("");
+        String actualResult = calculator.evaluate("", session);
 
         assertThat(actualResult).isEmpty();
     }
@@ -54,7 +55,7 @@ public class CalculatorTest {
         when(session.getNumberStack()).thenReturn(newArrayList(1d, 2d, 3d));
         givenDigitalProcessorInitialized("1", "2", "3");
 
-        String actualResult = calculator.evaluate("1 2 3");
+        String actualResult = calculator.evaluate("1 2 3", session);
 
         verify(session, times(3)).addDigit(anyDouble());
         assertThat(actualResult).isEqualTo("1 2 3");
@@ -66,7 +67,7 @@ public class CalculatorTest {
         String operator = "op";
         when(operatorHandlerFactory.handlerFor(operator)).thenReturn(Optional.of(operatorHandler));
 
-        String actualResult = calculator.evaluate("1 2 " + operator);
+        String actualResult = calculator.evaluate("1 2 " + operator, session);
 
         verify(operatorHandler).handle(operator, session);
     }
@@ -77,9 +78,8 @@ public class CalculatorTest {
 
         when(operatorHandlerFactory.handlerFor(operator)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> calculator.evaluate(operator))
-                .isInstanceOf(RuntimeException.class)
-                .hasMessageContaining("Operator " + operator + " is not supported");
+        assertThatThrownBy(() -> calculator.evaluate(operator, session))
+                .isInstanceOf(NotSupportedOperatorException.class);
     }
 
     private void givenDigitalProcessorInitialized(String... values) {
