@@ -22,9 +22,6 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CalculatorTest {
-
-    private static final String RESULT_PREFIX = "Stack: ";
-
     @Mock
     private CalculatorSession session;
     @Mock
