@@ -12,6 +12,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.function.BiFunction;
 import java.util.function.Predicate;
 
+import static com.hussein.samples.rpncalculator.operator.OperatorHandlerTestHelper.initializeDigitProcessorFor;
+import static com.hussein.samples.rpncalculator.operator.OperatorHandlerTestHelper.initializeSessionFor;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Matchers.anyDouble;
 import static org.mockito.Mockito.never;
@@ -57,8 +59,9 @@ public class TwoParameterBasedOperatorHandlerTest {
         String param2 = "2";
         String param1 = "1";
         Double operatorFunctionResult = 3d;
-        initializeDigitProcessorFor(param2, param1, operatorFunctionResult);
-        initializeSessionFor(param2, param1);
+        initializeDigitProcessorFor(digitProcessor, param1, param2);
+        initializeSessionFor(session, param1, param2);
+        when(operatorFunction.apply(anyDouble(), anyDouble())).thenReturn(operatorFunctionResult);
 
         handler.handle(OPERATOR, session);
 
@@ -71,18 +74,5 @@ public class TwoParameterBasedOperatorHandlerTest {
 
         assertThatThrownBy(() ->  handler.handle(OPERATOR, session))
                 .isInstanceOf(OperatorInsufficientParametersException.class);
-    }
-
-    private void initializeDigitProcessorFor(String param2, String param1, double result) {
-        Double param1Digittized = Double.valueOf(param1);
-        Double param2Digittized = Double.valueOf(param2);
-        when(digitProcessor.toDigit(param1)).thenReturn(param1Digittized);
-        when(digitProcessor.toDigit(param2)).thenReturn(param2Digittized);
-        when(operatorFunction.apply(param1Digittized, param2Digittized)).thenReturn(result);
-    }
-
-    private void initializeSessionFor(String param2, String param1) {
-        when(session.popDigit()).thenReturn(param1).thenReturn(param2);
-        when(session.countDigits()).thenReturn(2);
     }
 }
