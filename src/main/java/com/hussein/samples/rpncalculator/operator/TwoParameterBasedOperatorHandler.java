@@ -9,46 +9,27 @@ import java.util.function.Predicate;
 
 import static java.lang.String.format;
 
-public class TwoParameterBasedOperatorHandler implements OperatorHandler {
+public class TwoParameterBasedOperatorHandler extends AbstractOperatorHandler {
 
-    private final Predicate<String> operatorHandler;
     private final BiFunction<Double, Double, Double> function;
-    private final DigitProcessor digitProcessor;
 
-    public TwoParameterBasedOperatorHandler(Predicate<String> operatorHandler,
+    public TwoParameterBasedOperatorHandler(Predicate<String> operatorHandlerPredicate,
                                             BiFunction<Double, Double, Double> function,
                                             DigitProcessor digitProcessor) {
-        this.operatorHandler = operatorHandler;
+        super(digitProcessor, operatorHandlerPredicate);
         this.function = function;
-        this.digitProcessor = digitProcessor;
     }
 
     @Override
-    public void handle(String operator, CalculatorSession session) {
-        if ( !canHandle(operator) ) {
-            return;
-        }
-        validateParameters(operator, session);
+    protected int getNumberOfParameters() {
+        return 2;
+    }
 
+    @Override
+    protected double doHandle(String operator, CalculatorSession session) {
         double parameter1 = fetchParameter(session);
         double parameter2 = fetchParameter(session);
 
-        double result = function.apply(parameter1, parameter2);
-
-        session.addDigit(result);
-    }
-
-    private double fetchParameter(CalculatorSession session) {
-        return digitProcessor.toDigit( session.popDigit() );
-    }
-
-    private void validateParameters(String operator, CalculatorSession session) {
-        if ( session.countDigits() < 2 ) {
-            throw new OperatorInsufficientParametersException();
-        }
-    }
-
-    private boolean canHandle(String operator) {
-        return operatorHandler.test(operator.trim());
+        return function.apply(parameter1, parameter2);
     }
 }
