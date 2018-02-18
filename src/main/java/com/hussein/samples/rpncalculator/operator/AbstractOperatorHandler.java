@@ -17,14 +17,14 @@ abstract class AbstractOperatorHandler implements OperatorHandler {
         validateParameters(operator, session);
 
         double result = doHandle(operator, session);
-        session.addDigit(result);
+        session.addNumber(result);
     }
 
     protected abstract int getNumberOfParameters();
     protected abstract double doHandle(String operator, CalculatorSession session);
 
     double fetchParameter(CalculatorSession session) {
-        return digitProcessor.toDigit( session.popDigit() );
+        return session.popDigit();
     }
 
     private void validateParameters(String operator, CalculatorSession session) {

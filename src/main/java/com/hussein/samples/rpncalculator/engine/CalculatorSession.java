@@ -2,22 +2,29 @@ package com.hussein.samples.rpncalculator.engine;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Stack;
 
 public class CalculatorSession {
 
-    public List<Double> getNumberStack() {
-        return Collections.emptyList();
+    private final Stack<Double> numberStack;
+
+    public CalculatorSession() {
+        this.numberStack = new Stack<>();
     }
 
-    public void addDigit(Double digit) {
+    public List<Double> getNumbersInStack() {
+        return Collections.unmodifiableList(this.numberStack);
+    }
 
+    public void addNumber(Double number) {
+        numberStack.push(number);
     }
 
     public int countDigits() {
-        return 0;
+        return numberStack.size();
     }
 
-    public String popDigit() {
-        return null;
+    public Double popDigit() {
+        return numberStack.pop();
     }
 }

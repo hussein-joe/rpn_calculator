@@ -11,7 +11,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.function.BiFunction;
 
-import static com.hussein.samples.rpncalculator.operator.OperatorHandlerTestHelper.initializeDigitProcessorFor;
 import static com.hussein.samples.rpncalculator.operator.OperatorHandlerTestHelper.initializeSessionFor;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Matchers.anyDouble;
@@ -42,16 +41,15 @@ public class TwoParameterBasedOperatorHandlerTest {
 
     @Test
     public void shouldAddResultOfOperatorFunctionToCalculatorSession() {
-        String param2 = "2";
-        String param1 = "1";
+        Double param1 = Double.valueOf(1);
+        Double param2 = Double.valueOf(2);
         Double operatorFunctionResult = 3d;
-        initializeDigitProcessorFor(digitProcessor, param1, param2);
         initializeSessionFor(session, param1, param2);
         when(operatorFunction.apply(anyDouble(), anyDouble())).thenReturn(operatorFunctionResult);
 
         handler.handle(OPERATOR, session);
 
-        verify(session).addDigit(operatorFunctionResult);
+        verify(session).addNumber(operatorFunctionResult);
     }
 
     @Test

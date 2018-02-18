@@ -46,18 +46,18 @@ public class CalculatorTest {
 
     @Test
     public void shouldPrintTheSameNumbersInTheSameOrderWhenNoOperatorPassed() {
-        when(session.getNumberStack()).thenReturn(newArrayList(1d, 2d, 3d));
-        givenDigitalProcessorInitialized("1", "2", "3");
+        when(session.getNumbersInStack()).thenReturn(newArrayList(1d, 2d, 3d));
+        givenDigitalProcessorInitialized(1d, 2d, 3d);
 
         CalculatorResult actualResult = calculator.evaluate("1 2 3", session);
 
-        verify(session, times(3)).addDigit(anyDouble());
+        verify(session, times(3)).addNumber(anyDouble());
         assertThat(actualResult.getCalculationResult()).isEqualTo("1 2 3");
     }
 
     @Test
     public void shouldCallOperatorHandlerWhenPassOperator() {
-        givenDigitalProcessorInitialized("1", "2");
+        givenDigitalProcessorInitialized(1d, 2d);
         String operator = "op";
         when(operatorHandlerFactory.handlerFor(operator)).thenReturn(Optional.of(operatorHandler));
 
@@ -77,12 +77,9 @@ public class CalculatorTest {
                 .isInstanceOf(NotSupportedOperatorException.class);
     }
 
-    private void givenDigitalProcessorInitialized(String... values) {
+    private void givenDigitalProcessorInitialized(Double... values) {
         Stream.of(values).forEach(t->{
-            Double value = Double.valueOf(t);
-            when(digitProcessor.toDigit(t)).thenReturn(value);
-            when(digitProcessor.isDigit(t)).thenReturn(true);
-            when(digitProcessor.formatNumber(value)).thenReturn(Long.valueOf(t).toString());
+            when(digitProcessor.formatNumber(t)).thenReturn(String.valueOf(t.intValue()));
         });
     }
 }

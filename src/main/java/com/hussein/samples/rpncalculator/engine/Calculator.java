@@ -5,6 +5,7 @@ import com.hussein.samples.rpncalculator.engine.CalculatorResult.CalculatorResul
 import com.hussein.samples.rpncalculator.exceptions.NotSupportedOperatorException;
 import com.hussein.samples.rpncalculator.exceptions.OperatorInsufficientParametersException;
 import com.hussein.samples.rpncalculator.operator.OperatorHandler;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -44,8 +45,8 @@ public class Calculator {
     }
 
     private void process(String token, CalculatorSession calculatorSession) {
-        if ( digitProcessor.isDigit(token) ) {
-            calculatorSession.addDigit(Double.valueOf(token));
+        if ( isDigit(token) ) {
+            calculatorSession.addNumber(Double.valueOf(token));
             return;
         }
         Optional<OperatorHandler> handler = handlerFactory.handlerFor(token);
@@ -54,10 +55,12 @@ public class Calculator {
     }
 
     private String stackContent(CalculatorSession calculatorSession) {
-        List<Double> numbersInStack = calculatorSession.getNumberStack();
+        List<Double> numbersInStack = calculatorSession.getNumbersInStack();
         return numbersInStack.stream().map(digitProcessor::formatNumber)
                 .collect(Collectors.joining(" "));
     }
 
-
+    private boolean isDigit(String token) {
+        return NumberUtils.isCreatable(token);
+    }
 }

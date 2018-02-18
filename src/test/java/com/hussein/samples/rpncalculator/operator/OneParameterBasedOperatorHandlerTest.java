@@ -11,7 +11,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.function.Function;
 
-import static com.hussein.samples.rpncalculator.operator.OperatorHandlerTestHelper.initializeDigitProcessorFor;
 import static com.hussein.samples.rpncalculator.operator.OperatorHandlerTestHelper.initializeSessionFor;
 import static java.lang.Double.valueOf;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -52,14 +51,13 @@ public class OneParameterBasedOperatorHandlerTest {
 
     @Test
     public void shouldAddResultOfOperatorFunctionToCalculatorSession() {
-        String parameter = "1";
+        Double parameter = Double.valueOf(1);
         Double operatorFunctionResult = valueOf(3);
-        initializeDigitProcessorFor(digitProcessor, parameter);
         initializeSessionFor(session, parameter);
         when(operatorFunction.apply(anyDouble())).thenReturn(operatorFunctionResult);
 
         handler.handle(OPERATOR, session);
 
-        verify(session).addDigit(operatorFunctionResult);
+        verify(session).addNumber(operatorFunctionResult);
     }
 }

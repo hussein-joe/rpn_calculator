@@ -48,7 +48,7 @@ public class CalculatorProcessorTest {
 
         processor.start();
 
-        verify(outputStream, never()).write(anyString());
+        verify(outputStream, never()).writeLine(anyString());
     }
 
     @Test
@@ -57,7 +57,7 @@ public class CalculatorProcessorTest {
 
         processor.start();
 
-        verify(outputStream, never()).write(anyString());
+        verify(outputStream, never()).writeLine(anyString());
     }
 
     @Test
@@ -69,7 +69,7 @@ public class CalculatorProcessorTest {
 
         processor.start();
 
-        verify(outputStream).write(CALCULATOR_RESULT_PREFIX + expectedResult);
+        verify(outputStream).writeLine(CALCULATOR_RESULT_PREFIX + expectedResult);
     }
 
     @Test
@@ -84,8 +84,8 @@ public class CalculatorProcessorTest {
 
         processor.start();
 
-        verify(outputStream).write(CALCULATOR_RESULT_PREFIX + expectedResult1);
-        verify(outputStream).write(CALCULATOR_RESULT_PREFIX + expectedResult2);
+        verify(outputStream).writeLine(CALCULATOR_RESULT_PREFIX + expectedResult1);
+        verify(outputStream).writeLine(CALCULATOR_RESULT_PREFIX + expectedResult2);
     }
 
     @Test
@@ -99,8 +99,8 @@ public class CalculatorProcessorTest {
 
         processor.start();
 
-        verify(outputStream).write(CALCULATOR_RESULT_PREFIX + expectedResult);
-        verify(outputStream).write(contains("*" + ": insufficient parameters"));
+        verify(outputStream).writeLine(CALCULATOR_RESULT_PREFIX + expectedResult);
+        verify(outputStream).writeLine(contains("*" + ": insufficient parameters"));
     }
 
     @Test
@@ -115,8 +115,8 @@ public class CalculatorProcessorTest {
 
         processor.start();
 
-        verify(outputStream).write(CALCULATOR_RESULT_PREFIX + expectedResult);
-        verify(outputStream).write(contains(unknownOperator + " is unknown"));
+        verify(outputStream).writeLine(CALCULATOR_RESULT_PREFIX + expectedResult);
+        verify(outputStream).writeLine(contains(unknownOperator + " is unknown"));
     }
 
     private void givenUserInputInitializeMockedCalculatorEvaluate(String userInput, String expectedResult) {
