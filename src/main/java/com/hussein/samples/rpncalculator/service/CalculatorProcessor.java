@@ -1,0 +1,50 @@
+package com.hussein.samples.rpncalculator.service;
+
+import com.google.common.base.Strings;
+import com.hussein.samples.rpncalculator.engine.Calculator;
+import com.hussein.samples.rpncalculator.engine.CalculatorSession;
+
+import static com.google.common.base.Strings.isNullOrEmpty;
+
+public class CalculatorProcessor {
+
+    private static final String CALCULATOR_RESULT_PREFIX = "stack: ";
+    private final CalculatorInputStream inputStream;
+    private final CalculatorOutputStream outputStream;
+    private final Calculator calculator;
+    private final CalculatorSessionFactory sessionFactory;
+
+    public CalculatorProcessor(CalculatorInputStream inputStream, CalculatorOutputStream outputStream,
+                               Calculator calculator, CalculatorSessionFactory sessionFactory) {
+
+        this.inputStream = inputStream;
+        this.outputStream = outputStream;
+        this.calculator = calculator;
+        this.sessionFactory = sessionFactory;
+    }
+
+    public void start() {
+        CalculatorSession session = sessionFactory.newSession();
+        while (true) {
+            String userInput = inputStream.readLine();
+            if (isNullOrEmpty(userInput)) {
+                continue;
+            }
+
+            if ( exitCalculator(userInput) ) {
+                break;
+            }
+
+            String calculatorResult = calculator.evaluate(userInput, session);
+            writeCalculatorResultToOutputStream(calculatorResult);
+        }
+    }
+
+    private void writeCalculatorResultToOutputStream(String calculatorResult) {
+        outputStream.write(CALCULATOR_RESULT_PREFIX + calculatorResult);
+    }
+
+    private boolean exitCalculator(String userInput) {
+        return "exit".equalsIgnoreCase(userInput);
+    }
+}
