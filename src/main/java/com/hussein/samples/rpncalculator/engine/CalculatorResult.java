@@ -1,6 +1,5 @@
 package com.hussein.samples.rpncalculator.engine;
 
-import java.util.Objects;
 import java.util.Optional;
 
 import static java.util.Objects.requireNonNull;

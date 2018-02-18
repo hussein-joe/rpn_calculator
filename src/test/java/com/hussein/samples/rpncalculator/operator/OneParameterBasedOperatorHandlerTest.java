@@ -9,17 +9,13 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.function.BiFunction;
 import java.util.function.Function;
-import java.util.function.Predicate;
 
 import static com.hussein.samples.rpncalculator.operator.OperatorHandlerTestHelper.initializeDigitProcessorFor;
 import static com.hussein.samples.rpncalculator.operator.OperatorHandlerTestHelper.initializeSessionFor;
 import static java.lang.Double.valueOf;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyDouble;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -29,8 +25,6 @@ public class OneParameterBasedOperatorHandlerTest {
 
     private static final String OPERATOR = "sqrt";
 
-    @Mock
-    private Predicate<String> operatorHandlerPredict;
     @Mock
     private Function<Double, Double> operatorFunction;
     @Mock
@@ -43,9 +37,8 @@ public class OneParameterBasedOperatorHandlerTest {
     @Before
     public void setUp() {
         initMocks(this);
-        when(operatorHandlerPredict.test(OPERATOR)).thenReturn(true);
 
-        handler = new OneParameterBasedOperatorHandler(operatorHandlerPredict, operatorFunction,
+        handler = new OneParameterBasedOperatorHandler(operatorFunction,
                 digitProcessor);
     }
 
@@ -68,15 +61,5 @@ public class OneParameterBasedOperatorHandlerTest {
         handler.handle(OPERATOR, session);
 
         verify(session).addDigit(operatorFunctionResult);
-    }
-
-    @Test
-    public void shouldNotCallOperatorFunctionWhenHandlerCannotHandlePassedOperator() {
-        when(operatorHandlerPredict.test(OPERATOR)).thenReturn(false);
-
-        handler.handle(OPERATOR, session);
-
-        verify(operatorFunction, never()).apply(anyDouble());
-        verify(session, never()).addDigit(anyDouble());
     }
 }

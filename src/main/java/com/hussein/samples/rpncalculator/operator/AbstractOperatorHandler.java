@@ -4,23 +4,16 @@ import com.hussein.samples.rpncalculator.engine.CalculatorSession;
 import com.hussein.samples.rpncalculator.engine.DigitProcessor;
 import com.hussein.samples.rpncalculator.exceptions.OperatorInsufficientParametersException;
 
-import java.util.function.Predicate;
-
 abstract class AbstractOperatorHandler implements OperatorHandler {
 
     protected final DigitProcessor digitProcessor;
-    protected final Predicate<String> operatorHandlerPredicate;
 
-    protected AbstractOperatorHandler(DigitProcessor digitProcessor, Predicate<String> operatorHandlerPredicate) {
+    protected AbstractOperatorHandler(DigitProcessor digitProcessor) {
         this.digitProcessor = digitProcessor;
-        this.operatorHandlerPredicate = operatorHandlerPredicate;
     }
 
     @Override
     public void handle(String operator, CalculatorSession session) {
-        if ( !canHandle(operator) ) {
-            return;
-        }
         validateParameters(operator, session);
 
         double result = doHandle(operator, session);
@@ -38,9 +31,5 @@ abstract class AbstractOperatorHandler implements OperatorHandler {
         if ( session.countDigits() < getNumberOfParameters() ) {
             throw new OperatorInsufficientParametersException(()->operator);
         }
-    }
-
-    private boolean canHandle(String operator) {
-        return operatorHandlerPredicate.test(operator.trim());
     }
 }

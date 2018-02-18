@@ -1,6 +1,5 @@
 package com.hussein.samples.rpncalculator.service;
 
-import com.google.common.base.Strings;
 import com.hussein.samples.rpncalculator.engine.Calculator;
 import com.hussein.samples.rpncalculator.engine.CalculatorResult;
 import com.hussein.samples.rpncalculator.engine.CalculatorSession;

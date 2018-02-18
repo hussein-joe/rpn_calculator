@@ -10,13 +10,11 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.function.BiFunction;
-import java.util.function.Predicate;
 
 import static com.hussein.samples.rpncalculator.operator.OperatorHandlerTestHelper.initializeDigitProcessorFor;
 import static com.hussein.samples.rpncalculator.operator.OperatorHandlerTestHelper.initializeSessionFor;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Matchers.anyDouble;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -26,8 +24,6 @@ public class TwoParameterBasedOperatorHandlerTest {
 
     private static final String OPERATOR = "+";
 
-    @Mock
-    private Predicate<String> canHandlerPredicate;
     @Mock
     private BiFunction<Double, Double, Double> operatorFunction;
     @Mock
@@ -41,17 +37,7 @@ public class TwoParameterBasedOperatorHandlerTest {
     public void setUp() throws Exception {
         initMocks(this);
 
-        handler = new TwoParameterBasedOperatorHandler(canHandlerPredicate, operatorFunction, digitProcessor);
-        when(canHandlerPredicate.test(OPERATOR)).thenReturn(true);
-    }
-
-    @Test
-    public void shouldNotCallOperatorFunctionWhenHandlerCanNotHandleOperator() {
-        when(canHandlerPredicate.test(OPERATOR)).thenReturn(false);
-
-        handler.handle("+", session);
-
-        verify(operatorFunction, never()).apply(anyDouble(), anyDouble());
+        handler = new TwoParameterBasedOperatorHandler(operatorFunction, digitProcessor);
     }
 
     @Test

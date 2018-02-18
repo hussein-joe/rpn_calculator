@@ -2,21 +2,16 @@ package com.hussein.samples.rpncalculator.operator;
 
 import com.hussein.samples.rpncalculator.engine.CalculatorSession;
 import com.hussein.samples.rpncalculator.engine.DigitProcessor;
-import com.hussein.samples.rpncalculator.exceptions.OperatorInsufficientParametersException;
 
 import java.util.function.BiFunction;
-import java.util.function.Predicate;
-
-import static java.lang.String.format;
 
 public class TwoParameterBasedOperatorHandler extends AbstractOperatorHandler {
 
     private final BiFunction<Double, Double, Double> function;
 
-    public TwoParameterBasedOperatorHandler(Predicate<String> operatorHandlerPredicate,
-                                            BiFunction<Double, Double, Double> function,
+    public TwoParameterBasedOperatorHandler(BiFunction<Double, Double, Double> function,
                                             DigitProcessor digitProcessor) {
-        super(digitProcessor, operatorHandlerPredicate);
+        super(digitProcessor);
         this.function = function;
     }
 
