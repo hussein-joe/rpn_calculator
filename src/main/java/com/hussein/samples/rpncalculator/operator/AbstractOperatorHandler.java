@@ -36,7 +36,7 @@ abstract class AbstractOperatorHandler implements OperatorHandler {
 
     private void validateParameters(String operator, CalculatorSession session) {
         if ( session.countDigits() < getNumberOfParameters() ) {
-            throw new OperatorInsufficientParametersException();
+            throw new OperatorInsufficientParametersException(()->operator);
         }
     }
 

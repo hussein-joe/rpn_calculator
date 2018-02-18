@@ -1,7 +1,9 @@
 package com.hussein.samples.rpncalculator.engine;
 
 import com.google.common.base.Splitter;
+import com.hussein.samples.rpncalculator.engine.CalculatorResult.CalculatorResultBuilder;
 import com.hussein.samples.rpncalculator.exceptions.NotSupportedOperatorException;
+import com.hussein.samples.rpncalculator.exceptions.OperatorInsufficientParametersException;
 import com.hussein.samples.rpncalculator.operator.OperatorHandler;
 
 import java.util.List;
@@ -19,17 +21,26 @@ public class Calculator {
         this.handlerFactory = handlerFactory;
     }
 
-    public String evaluate(String userInput, CalculatorSession calculatorSession) {
+    public CalculatorResult evaluate(String userInput, CalculatorSession calculatorSession) {
         if ( userInput == null || userInput.trim().length() == 0 ) {
-            return "";
+            return new CalculatorResultBuilder()
+                    .withCalculationResult("")
+                    .build();
         }
 
         List<String> tokens = Splitter.on(Pattern.compile("\\s")).omitEmptyStrings().splitToList(userInput);
-        for (String token: tokens) {
-            process(token, calculatorSession);
+        CalculatorResultBuilder resultBuilder = new CalculatorResultBuilder();
+        try {
+            for (String token : tokens) {
+                process(token, calculatorSession);
+            }
+        } catch (NotSupportedOperatorException | OperatorInsufficientParametersException exp) {
+            resultBuilder.withCalculationError(exp);
         }
 
-        return stackContent(calculatorSession);
+        return resultBuilder
+                .withCalculationResult(stackContent(calculatorSession))
+                .build();
     }
 
     private void process(String token, CalculatorSession calculatorSession) {
@@ -38,7 +49,7 @@ public class Calculator {
             return;
         }
         Optional<OperatorHandler> handler = handlerFactory.handlerFor(token);
-        handler.orElseThrow(() -> new NotSupportedOperatorException())
+        handler.orElseThrow(() -> new NotSupportedOperatorException(()->token))
                 .handle(token, calculatorSession);
     }
 

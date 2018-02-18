@@ -42,9 +42,9 @@ public class CalculatorTest {
 
     @Test
     public void shouldPrintStackWhenEmptyStringPassed() {
-        String actualResult = calculator.evaluate("", session);
+        CalculatorResult actualResult = calculator.evaluate("", session);
 
-        assertThat(actualResult).isEmpty();
+        assertThat(actualResult.getCalculationResult()).isEmpty();
     }
 
     @Test
@@ -52,10 +52,10 @@ public class CalculatorTest {
         when(session.getNumberStack()).thenReturn(newArrayList(1d, 2d, 3d));
         givenDigitalProcessorInitialized("1", "2", "3");
 
-        String actualResult = calculator.evaluate("1 2 3", session);
+        CalculatorResult actualResult = calculator.evaluate("1 2 3", session);
 
         verify(session, times(3)).addDigit(anyDouble());
-        assertThat(actualResult).isEqualTo("1 2 3");
+        assertThat(actualResult.getCalculationResult()).isEqualTo("1 2 3");
     }
 
     @Test
@@ -64,7 +64,7 @@ public class CalculatorTest {
         String operator = "op";
         when(operatorHandlerFactory.handlerFor(operator)).thenReturn(Optional.of(operatorHandler));
 
-        String actualResult = calculator.evaluate("1 2 " + operator, session);
+        CalculatorResult actualResult = calculator.evaluate("1 2 " + operator, session);
 
         verify(operatorHandler).handle(operator, session);
     }
@@ -75,7 +75,8 @@ public class CalculatorTest {
 
         when(operatorHandlerFactory.handlerFor(operator)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> calculator.evaluate(operator, session))
+        CalculatorResult actualResult = calculator.evaluate(operator, session);
+        assertThat(actualResult.getCalculationError().get())
                 .isInstanceOf(NotSupportedOperatorException.class);
     }
 

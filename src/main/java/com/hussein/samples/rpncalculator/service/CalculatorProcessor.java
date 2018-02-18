@@ -2,6 +2,7 @@ package com.hussein.samples.rpncalculator.service;
 
 import com.google.common.base.Strings;
 import com.hussein.samples.rpncalculator.engine.Calculator;
+import com.hussein.samples.rpncalculator.engine.CalculatorResult;
 import com.hussein.samples.rpncalculator.engine.CalculatorSession;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
@@ -35,13 +36,15 @@ public class CalculatorProcessor {
                 break;
             }
 
-            String calculatorResult = calculator.evaluate(userInput, session);
-            writeCalculatorResultToOutputStream(calculatorResult);
+            CalculatorResult calculationResult = calculator.evaluate(userInput, session);
+            writeCalculatorResultToOutputStream(calculationResult);
         }
     }
 
-    private void writeCalculatorResultToOutputStream(String calculatorResult) {
-        outputStream.write(CALCULATOR_RESULT_PREFIX + calculatorResult);
+    private void writeCalculatorResultToOutputStream(CalculatorResult<? extends RuntimeException> calculatorResult) {
+        outputStream.write(CALCULATOR_RESULT_PREFIX + calculatorResult.getCalculationResult());
+        calculatorResult.getCalculationError().map(RuntimeException::getMessage)
+                .ifPresent(outputStream::write);
     }
 
     private boolean exitCalculator(String userInput) {
