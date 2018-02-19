@@ -21,7 +21,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 @RunWith(MockitoJUnitRunner.class)
 public class TwoParameterBasedOperatorHandlerTest {
 
-    private static final String OPERATOR = "+";
+    private static final String OPERATOR = "/";
 
     @Mock
     private BiFunction<Double, Double, Double> operatorFunction;
@@ -41,11 +41,11 @@ public class TwoParameterBasedOperatorHandlerTest {
 
     @Test
     public void shouldAddResultOfOperatorFunctionToCalculatorSession() {
-        Double param1 = Double.valueOf(1);
+        Double param1 = Double.valueOf(12);
         Double param2 = Double.valueOf(2);
         Double operatorFunctionResult = 3d;
         initializeSessionFor(session, param1, param2);
-        when(operatorFunction.apply(anyDouble(), anyDouble())).thenReturn(operatorFunctionResult);
+        when(operatorFunction.apply(param2, param1)).thenReturn(operatorFunctionResult);
 
         handler.handle(OPERATOR, session);
 

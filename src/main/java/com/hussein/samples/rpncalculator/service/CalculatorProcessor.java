@@ -47,6 +47,6 @@ public class CalculatorProcessor {
     }
 
     private boolean exitCalculator(String userInput) {
-        return "exit".equalsIgnoreCase(userInput);
+        return "exit".equalsIgnoreCase(userInput.trim());
     }
 }

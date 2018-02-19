@@ -25,6 +25,6 @@ public class TwoParameterBasedOperatorHandler extends AbstractOperatorHandler {
         double parameter1 = fetchParameter(session);
         double parameter2 = fetchParameter(session);
 
-        return function.apply(parameter1, parameter2);
+        return function.apply(parameter2, parameter1);
     }
 }
