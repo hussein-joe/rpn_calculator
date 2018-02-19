@@ -6,5 +6,6 @@ public class ClearOperatorHandler implements OperatorHandler {
     @Override
     public void handle(String operator, CalculatorSession session) {
         session.clearNumbers();
+        session.clearAppliedInstruction();
     }
 }

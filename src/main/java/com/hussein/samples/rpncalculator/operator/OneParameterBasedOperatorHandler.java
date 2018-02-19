@@ -1,5 +1,6 @@
 package com.hussein.samples.rpncalculator.operator;
 
+import com.hussein.samples.rpncalculator.engine.AppliedInstruction;
 import com.hussein.samples.rpncalculator.engine.CalculatorSession;
 import com.hussein.samples.rpncalculator.engine.DigitProcessor;
 
@@ -20,9 +21,10 @@ public class OneParameterBasedOperatorHandler extends AbstractOperatorHandler {
     }
 
     @Override
-    protected double doHandle(String operator, CalculatorSession session) {
+    protected AppliedInstruction doHandle(String operator, CalculatorSession session) {
         double parameter = fetchParameter(session);
 
-        return function.apply(parameter);
+        Double result = function.apply(parameter);
+        return new AppliedInstruction(operator, result, parameter);
     }
 }

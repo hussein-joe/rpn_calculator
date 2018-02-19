@@ -27,9 +27,10 @@ public class ClearOperatorHandlerTest {
     }
 
     @Test
-    public void shouldDelegateToSessionToClearNumbers() {
+    public void shouldDelegateToSessionToClearNumbersAndAppliedInstructions() {
         handler.handle("+", session);
 
         verify(session).clearNumbers();
+        verify(session).clearAppliedInstruction();
     }
 }

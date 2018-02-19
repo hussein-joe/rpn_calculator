@@ -1,7 +1,7 @@
 package com.hussein.samples.rpncalculator.engine;
 
+import com.google.common.collect.ImmutableMap;
 import com.hussein.samples.rpncalculator.operator.OperatorHandler;
-import org.assertj.core.util.Maps;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,9 +32,8 @@ public class OperatorHandlerFactoryTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        
-        operatorHandlerMap = Maps.newHashMap(OPERATOR, operatorHandler);
-        operatorHandlerMap = Maps.newHashMap(OPERATOR_CLEAR, clearOperatorHandler);
+
+        this.operatorHandlerMap = ImmutableMap.of(OPERATOR, operatorHandler, OPERATOR_CLEAR, clearOperatorHandler);
         operatorHandlerFactory = new OperatorHandlerFactory(operatorHandlerMap);
     }
 

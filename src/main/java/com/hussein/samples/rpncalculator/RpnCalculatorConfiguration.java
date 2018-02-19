@@ -3,10 +3,7 @@ package com.hussein.samples.rpncalculator;
 import com.hussein.samples.rpncalculator.engine.Calculator;
 import com.hussein.samples.rpncalculator.engine.DigitProcessor;
 import com.hussein.samples.rpncalculator.engine.OperatorHandlerFactory;
-import com.hussein.samples.rpncalculator.operator.ClearOperatorHandler;
-import com.hussein.samples.rpncalculator.operator.OneParameterBasedOperatorHandler;
-import com.hussein.samples.rpncalculator.operator.OperatorHandler;
-import com.hussein.samples.rpncalculator.operator.TwoParameterBasedOperatorHandler;
+import com.hussein.samples.rpncalculator.operator.*;
 import com.hussein.samples.rpncalculator.service.CalculatorInputStream;
 import com.hussein.samples.rpncalculator.service.CalculatorOutputStream;
 import com.hussein.samples.rpncalculator.service.CalculatorProcessor;
@@ -40,6 +37,7 @@ public class RpnCalculatorConfiguration {
         operatorHandlerMap.put("/", new TwoParameterBasedOperatorHandler((p1, p2) -> p1/p2, digitProcessor));
         operatorHandlerMap.put("sqrt", new OneParameterBasedOperatorHandler(Math::sqrt, digitProcessor));
         operatorHandlerMap.put("clear", new ClearOperatorHandler());
+        operatorHandlerMap.put("undo", new UndoOperatorHandler());
 
         return new OperatorHandlerFactory(operatorHandlerMap);
     }
