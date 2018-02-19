@@ -27,4 +27,8 @@ public class CalculatorSession {
     public Double popDigit() {
         return numberStack.pop();
     }
+
+    public void clearNumbers() {
+        this.numberStack.clear();
+    }
 }

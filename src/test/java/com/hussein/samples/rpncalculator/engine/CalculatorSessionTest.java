@@ -40,4 +40,24 @@ public class CalculatorSessionTest {
         assertThat(session.countDigits()).isEqualTo(0);
         assertThat(session.getNumbersInStack()).isEmpty();
     }
+
+    @Test
+    public void clearShouldClearAllNumbersInStack() {
+        session.addNumber(Double.valueOf(1));
+        session.addNumber(Double.valueOf(2));
+
+        session.clearNumbers();
+
+        assertThat(session.countDigits()).isEqualTo(0);
+        assertThat(session.getNumbersInStack()).isEmpty();
+    }
+
+    @Test
+    public void givenStackIsEmptyClearShouldNotThrowException() {
+        session.clearNumbers();
+        session.clearNumbers();
+
+        assertThat(session.countDigits()).isEqualTo(0);
+        assertThat(session.getNumbersInStack()).isEmpty();
+    }
 }
