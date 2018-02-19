@@ -7,16 +7,18 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static java.util.Collections.unmodifiableMap;
+import static java.util.Objects.requireNonNull;
 
 public class OperatorHandlerFactory {
     private final Map<String, OperatorHandler> operatorHandlerMap;
 
     public OperatorHandlerFactory(Map<String, OperatorHandler> operatorHandlerMap) {
-        Objects.requireNonNull(operatorHandlerMap);
+        requireNonNull(operatorHandlerMap);
         this.operatorHandlerMap = unmodifiableMap(operatorHandlerMap);
     }
 
     public Optional<OperatorHandler> handlerFor(String operator) {
-        return Optional.ofNullable(operatorHandlerMap.get(operator.trim()));
+        requireNonNull(operator);
+        return Optional.ofNullable(operatorHandlerMap.get(operator.trim().toLowerCase()));
     }
 }

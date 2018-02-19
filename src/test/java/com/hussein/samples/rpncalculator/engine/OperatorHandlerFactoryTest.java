@@ -18,8 +18,12 @@ import static org.mockito.MockitoAnnotations.initMocks;
 public class OperatorHandlerFactoryTest {
 
     private static final String OPERATOR = "+";
+    private static final String OPERATOR_CLEAR = "clear";
+
     @Mock
     private OperatorHandler operatorHandler;
+    @Mock
+    private OperatorHandler clearOperatorHandler;
 
     private Map<String, OperatorHandler> operatorHandlerMap;
 
@@ -30,6 +34,7 @@ public class OperatorHandlerFactoryTest {
         initMocks(this);
         
         operatorHandlerMap = Maps.newHashMap(OPERATOR, operatorHandler);
+        operatorHandlerMap = Maps.newHashMap(OPERATOR_CLEAR, clearOperatorHandler);
         operatorHandlerFactory = new OperatorHandlerFactory(operatorHandlerMap);
     }
 
@@ -46,5 +51,12 @@ public class OperatorHandlerFactoryTest {
         Optional<OperatorHandler> actualResult = operatorHandlerFactory.handlerFor(OPERATOR);
 
         assertThat(actualResult.get()).isSameAs(operatorHandler);
+    }
+
+    @Test
+    public void shouldIgnoreCaseForPassedOperator() {
+        Optional<OperatorHandler> actualResult = operatorHandlerFactory.handlerFor(OPERATOR_CLEAR.toUpperCase());
+
+        assertThat(actualResult.get()).isSameAs(clearOperatorHandler);
     }
 }
