@@ -41,9 +41,9 @@ public class CalculatorProcessor {
     }
 
     private void writeCalculatorResultToOutputStream(CalculatorResult<? extends RuntimeException> calculatorResult) {
-        outputStream.writeLine(CALCULATOR_RESULT_PREFIX + calculatorResult.getCalculationResult());
         calculatorResult.getCalculationError().map(RuntimeException::getMessage)
                 .ifPresent(outputStream::writeLine);
+        outputStream.writeLine(CALCULATOR_RESULT_PREFIX + calculatorResult.getCalculationResult());
     }
 
     private boolean exitCalculator(String userInput) {

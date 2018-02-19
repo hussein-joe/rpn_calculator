@@ -8,6 +8,7 @@ import com.hussein.samples.rpncalculator.exceptions.OperatorInsufficientParamete
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.OngoingStubbing;
@@ -93,14 +94,16 @@ public class CalculatorProcessorTest {
         String expectedResult = "5";
         String userInput = "2 3 + *";
 
+        String operatorWithInsufficientParameters = "*";
         givenUserInputInitializeMockedCalculatorEvaluate(userInput, expectedResult,
-                new OperatorInsufficientParametersException(()->"*"));
+                new OperatorInsufficientParametersException(()-> operatorWithInsufficientParameters));
         givenInputStreamInitializedWithUserInputs(inputStream, userInput);
 
         processor.start();
 
-        verify(outputStream).writeLine(CALCULATOR_RESULT_PREFIX + expectedResult);
-        verify(outputStream).writeLine(contains("*" + ": insufficient parameters"));
+        InOrder outputStreamInOrderInvocation = inOrder(outputStream);
+        outputStreamInOrderInvocation.verify(outputStream).writeLine(contains(operatorWithInsufficientParameters + ": insufficient parameters"));
+        outputStreamInOrderInvocation.verify(outputStream).writeLine(CALCULATOR_RESULT_PREFIX + expectedResult);
     }
 
     @Test
@@ -115,8 +118,9 @@ public class CalculatorProcessorTest {
 
         processor.start();
 
-        verify(outputStream).writeLine(CALCULATOR_RESULT_PREFIX + expectedResult);
-        verify(outputStream).writeLine(contains(unknownOperator + " is unknown"));
+        InOrder outputStreamInOrderInvocation = inOrder(outputStream);
+        outputStreamInOrderInvocation.verify(outputStream).writeLine(contains(unknownOperator + " is unknown"));
+        outputStreamInOrderInvocation.verify(outputStream).writeLine(CALCULATOR_RESULT_PREFIX + expectedResult);
     }
 
     private void givenUserInputInitializeMockedCalculatorEvaluate(String userInput, String expectedResult) {
