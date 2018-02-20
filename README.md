@@ -1,4 +1,4 @@
-#RPN Calculator
+# RPN Calculator
 An implementation of RPN calculator. The main idea in this design was to make it easier to
 support more operators. 
 
