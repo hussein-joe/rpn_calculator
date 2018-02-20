@@ -1,5 +1,6 @@
 package com.hussein.samples.rpncalculator.service;
 
+import com.hussein.samples.rpncalculator.CalculatorTestHelper;
 import com.hussein.samples.rpncalculator.engine.Calculator;
 import com.hussein.samples.rpncalculator.engine.CalculatorResult.CalculatorResultBuilder;
 import com.hussein.samples.rpncalculator.engine.CalculatorSession;
@@ -13,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.OngoingStubbing;
 
+import static com.hussein.samples.rpncalculator.CalculatorTestHelper.givenInputStreamInitializedWithUserInputs;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.contains;
 import static org.mockito.Mockito.*;
@@ -135,14 +137,5 @@ public class CalculatorProcessorTest {
         resultBuilder.withCalculationResult(expectedResult);
         resultBuilder.withCalculationError(exp);
         when(calculator.evaluate(userInput, session)).thenReturn(resultBuilder.build());
-    }
-
-    private void givenInputStreamInitializedWithUserInputs(CalculatorInputStream inputStreamReader,
-                                                           String userInput, String... moreUserInputs) {
-        OngoingStubbing<String> inputStreamStubbing = when(inputStreamReader.readLine()).thenReturn(userInput);
-        for (String s: moreUserInputs) {
-            inputStreamStubbing = inputStreamStubbing.thenReturn(s);
-        }
-        inputStreamStubbing = inputStreamStubbing.thenReturn("exit");
     }
 }

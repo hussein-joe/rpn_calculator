@@ -11,9 +11,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.function.BiFunction;
 
-import static com.hussein.samples.rpncalculator.operator.OperatorHandlerTestHelper.initializeSessionFor;
+import static com.hussein.samples.rpncalculator.CalculatorTestHelper.initializeSessionFor;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Matchers.anyDouble;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;

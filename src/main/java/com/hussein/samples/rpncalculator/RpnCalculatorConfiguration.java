@@ -45,7 +45,12 @@ public class RpnCalculatorConfiguration {
     @Bean
     public CalculatorProcessor calculatorProcessor(CalculatorInputStream inputStream, CalculatorOutputStream outputStream,
                                                    Calculator calculator) {
-        return new CalculatorProcessor(inputStream, outputStream, calculator, new CalculatorSessionFactory());
+        return new CalculatorProcessor(inputStream, outputStream, calculator, calculatorSessionFactory());
+    }
+
+    @Bean
+    public CalculatorSessionFactory calculatorSessionFactory() {
+        return new CalculatorSessionFactory();
     }
 
     @Bean
@@ -78,6 +83,7 @@ public class RpnCalculatorConfiguration {
         @Override
         public String readLine() {
             try {
+                System.out.println("Please start typing your expression: ");
                 return reader.readLine();
             } catch (IOException e) {
                 throw new RuntimeException(e);

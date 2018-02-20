@@ -11,7 +11,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.function.Function;
 
-import static com.hussein.samples.rpncalculator.operator.OperatorHandlerTestHelper.initializeSessionFor;
+import static com.hussein.samples.rpncalculator.CalculatorTestHelper.initializeSessionFor;
 import static java.lang.Double.valueOf;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Matchers.anyDouble;
